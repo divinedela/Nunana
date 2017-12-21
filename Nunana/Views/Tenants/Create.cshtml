@@ -4,7 +4,7 @@
     ViewBag.Title = "Add Tenant";
 }
 <br />
-<a class="btn btn-info pull-right" href="@Url.Action("Index")"> Back To Tenants List</a>
+<a class="btn btn-info pull-right" href="@Url.Action("Index")"><i class="fa fa-chevron-left"></i> Back To Tenants List</a>
 
 <h3 class="text-info">ADD NEW TENANT</h3> <br />
 @using (Html.BeginForm("Create", "Tenants", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

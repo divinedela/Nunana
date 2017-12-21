@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace Nunana
 {
@@ -24,8 +23,9 @@ namespace Nunana
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+               "~/Content/bootstrap.css",
+               "~/Content/font-awesome.css",
+               "~/Content/stylish-portfolio.css"));
         }
     }
 }

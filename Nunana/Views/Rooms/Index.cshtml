@@ -5,8 +5,7 @@
     ViewBag.Title = "Rooms List";
 }
 
-<br />
-<a class="btn btn-success" href="@Url.Action("Create")">Add New Room</a>
+<a class="btn btn-success" href="@Url.Action("Create")"><i class="fa fa-user">&nbsp;</i>Add New Room</a>
 
 <h3 class="text-info">ROOMS LIST</h3> <br />
 
@@ -22,7 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsCurrentlyRented)
             </th>
-           
+
         </tr>
     </thead>
     <tbody>
