@@ -15,8 +15,8 @@ namespace Nunana.Models
             return new ApplicationDbContext();
         }
 
-
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Tenant> Tenants { get; set; }
 
     }
 }

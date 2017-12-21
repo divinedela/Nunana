@@ -193,6 +193,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
+    <Compile Include="Controllers\TenantsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -204,16 +205,23 @@
     <Compile Include="Migrations\201712210957422_AddRoomsToDatabase.Designer.cs">
       <DependentUpon>201712210957422_AddRoomsToDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712211143083_AddTenantsToDatabase.cs" />
+    <Compile Include="Migrations\201712211143083_AddTenantsToDatabase.Designer.cs">
+      <DependentUpon>201712211143083_AddTenantsToDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Room.cs" />
+    <Compile Include="Models\Tenant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\RoomFormViewModel.cs" />
     <Compile Include="ViewModels\RoomsListViewModel.cs" />
+    <Compile Include="ViewModels\TenantFormViewModel.cs" />
+    <Compile Include="ViewModels\TenantsListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -274,6 +282,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Rooms\Index.cshtml" />
     <Content Include="Views\Rooms\Create.cshtml" />
+    <Content Include="Views\Tenants\Index.cshtml" />
+    <Content Include="Views\Tenants\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -297,6 +307,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712210957422_AddRoomsToDatabase.resx">
       <DependentUpon>201712210957422_AddRoomsToDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712211143083_AddTenantsToDatabase.resx">
+      <DependentUpon>201712211143083_AddTenantsToDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
