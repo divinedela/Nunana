@@ -17,6 +17,7 @@ namespace Nunana.Models
 
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
+        public DbSet<Rental> Rentals { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

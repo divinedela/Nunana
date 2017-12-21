@@ -1,0 +1,231 @@
+﻿@model Nunana.ViewModels.RentalFormViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+<br />
+<h3>CREATE NEW RENTAL</h3><br />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2">Tenant Name</label>
+            <div class="col-md-10">
+                <input id="tenant" class="typeahead form-control" type="text" placeholder="type to search tenant name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Room Type</label>
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.RoomType, htmlAttributes: new { id = "roomType", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Room Number</label>
+            <div class="col-md-10">
+                <select disabled class="form-control" id="roomSelect" name="dropdown">
+                    <option value="0">Select Room...</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Start Date</label>
+            <div class="col-md-10">
+                <input id="startDate" class=" form-control" type="text" placeholder="click this field to pop out datepicker">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Months</label>
+            <div class="col-md-10">
+                <input id="months" class=" form-control" type="text">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="submitForm" value="Save" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/libs")
+    <script>
+        $(document).ready(function () {
+            var vm = {};
+
+            var tenantsArray = [];
+
+            $('input#startDate').datepicker({ orientation: "bottom left", autoclose: true })
+                .on('changeDate', function (e) {
+                    vm.startDate = e.date;
+                    console.log(vm);
+                });
+
+            function reinitialiseRoomSelect() {
+                var roomSelect = $('#roomSelect');
+                roomSelect.empty();
+                roomSelect.attr('disabled', 'disabled');
+                roomSelect.append('<option value="0">Select Room...</option>');
+                vm.startDate = '';
+            }
+
+            $('#roomType').change(function (e) {
+                console.log(e);
+                var selectedRoomType = e.target.value;
+                if (selectedRoomType != 0) {
+                    vm.roomType = parseInt(selectedRoomType);
+                    console.log(vm);
+                    getVacantRooms(selectedRoomType);
+                }
+                else {
+                    reinitialiseRoomSelect();
+                }
+
+            });
+            $('#roomSelect').change(function (e) {
+                var selectedRoomId = e.target.value;
+                if (selectedRoomId != 0) {
+                    vm.roomId = parseInt(selectedRoomId);
+                    console.log(vm);
+                }
+            });
+
+
+            $('#months').change(function (e) {
+                var numberOfMonths = e.target.value;
+                if (numberOfMonths != 0) {
+                    vm.months = parseInt(numberOfMonths);
+                    console.log(vm);
+                }
+
+            });
+            var tenants = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.value);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    wildcard: '%QUERY',
+                    url: '/api/tenants?query=%QUERY',
+                    transform: function (response) {
+                        return $.map(response, function (tenant) {
+                            tenantsArray = [];
+                            tenantsArray = response;
+                            console.log(tenantsArray);
+                            return {
+                                value: tenant.name
+                            };
+                        });
+                    }
+                }
+            });
+
+            $('#tenant').typeahead({
+                minLength: 3,
+                highlight: true
+            }, {
+                    name: 'tenant-names',
+                    display: 'value',
+                    source: tenants
+                });
+
+            $('#tenant').on('typeahead:selected', function (e, selected) {
+                console.log(selected);
+
+                var selectedTenant = $.grep(tenantsArray, function (tenant) {
+                    return tenant.name === selected.value;
+                });
+
+                vm.tenantId = selectedTenant[0].id;
+                console.log(vm);
+            })
+                .on('typeahead:autocompleted', function (e, selected) {
+                    var selectedTenant = $.grep(tenantsArray, function (tenant) {
+                        return tenant.name == selected.value;
+                    });
+
+                    vm.tenantId = selectedTenant[0].id;
+                    console.log(vm);
+                });
+
+            function updateRoomSelectList(roomsList) {
+                var roomSelect = $('#roomSelect');
+                roomSelect.empty();
+                roomSelect.append('<option value="0">Select Room...</option>');
+
+                $.each(roomsList, function (index, element) {
+                    roomSelect.append('<option value=' + element.id + '>' + element.roomNumber + '</option>');
+                    roomSelect.removeAttr('disabled');
+                });
+            }
+
+            function getVacantRooms(roomType) {
+                $.ajax({
+                    url: '/api/rooms?roomType=' + roomType,
+                    method: 'GET',
+                    success: function (response) {
+                        console.log(response);
+                        updateRoomSelectList(response);
+                    },
+                    error: function (data) {
+                        swal(
+                            'Error',
+                            'Something went wrong!',
+                            'error'
+                        );
+                    }
+                });
+            }
+
+            function isValidFormData() {
+                console.log('validate');
+                if (isNaN(vm.tenantId) || isNaN(vm.roomId) || isNaN(vm.roomType) || isNaN(vm.months))
+                    return false;
+                return true;
+            }
+
+            $('#submitForm').on('click',
+                function (e) {
+                    e.preventDefault();
+
+                    if (isValidFormData()) {
+                        console.log('valid form');
+                        console.log(vm);
+
+                        $.ajax({
+                            url: '/api/rentals',
+                            data: vm,
+                            method: 'POST',
+                            success: function (response) {
+                                console.log(response);
+                                swal(
+                                    'Success',
+                                    'Rental Created!',
+                                    'success'
+                                );
+                                $('input:text').val('');
+                                reinitialiseRoomSelect();
+                            },
+
+                            error: function (response) {
+                                console.log(response);
+                                swal(
+                                    'Error',
+                                    'Something went wrong!',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+
+        });
+    </script>
+}
