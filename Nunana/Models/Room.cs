@@ -8,7 +8,7 @@ namespace Nunana.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(5, MinimumLength = 10)]
+        [StringLength(5, MinimumLength = 2)]
         public string RoomNumber { get; set; }
 
         public RoomType Type { get; set; }
