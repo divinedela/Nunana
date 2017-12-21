@@ -7,7 +7,7 @@
 
 <h3 class="text-info">TENANTS LIST</h3> <br />
 
-<table class="table table-striped table-responsive">
+<table class="table table-striped table-responsive dataTable">
     <thead>
         <tr>
             <th>Name</th>
@@ -29,3 +29,13 @@
         }
     </tbody>
 </table>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/libs")
+    <script>
+        $(document).ready(function () {
+            $('.dataTable').DataTable();
+        });
+    </script>
+}

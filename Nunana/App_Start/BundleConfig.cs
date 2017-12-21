@@ -22,10 +22,17 @@ namespace Nunana
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/libs").Include(
+                "~/Scripts/datatables/jquery.datatables.js",
+                "~/Scripts/datatables/datatables.bootstrap.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                "~/Content/bootstrap.css",
                "~/Content/font-awesome.css",
                "~/Content/stylish-portfolio.css"));
+
+            bundles.Add(new StyleBundle("~/Content/libcss").Include(
+                "~/Content/datatables/css/datatables.bootstrap.css"));
         }
     }
 }
