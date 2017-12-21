@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Nunana.Models
@@ -50,10 +52,12 @@ namespace Nunana.Models
         public string EmergencyContactEmail { get; set; }
 
         public DateTime DateCreated { get; set; }
+        public ICollection<Rental> Rentals { get; set; }
 
         public Tenant()
         {
             DateCreated = DateTime.Now;
+            Rentals = new Collection<Rental>();
         }
     }
 }

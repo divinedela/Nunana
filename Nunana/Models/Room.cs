@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Nunana.Models
@@ -18,9 +20,12 @@ namespace Nunana.Models
         [Required]
         public string CreatedBy { get; set; }
 
+        public ICollection<Rental> Rentals { get; set; }
+
         public Room()
         {
             DateCreated = DateTime.Now;
+            Rentals = new Collection<Rental>();
         }
     }
 
