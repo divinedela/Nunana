@@ -21,6 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsCurrentlyRented)
             </th>
+            <th></th>
 
         </tr>
     </thead>
@@ -36,6 +37,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsCurrentlyRented)
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", new { id=item.Id})"><i class="fa fa-edit">&nbsp;</i>Edit</a>
                 </td>
 
             </tr>

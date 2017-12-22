@@ -1,6 +1,7 @@
 ﻿using Nunana.Models;
 using Nunana.ViewModels;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Nunana.Controllers
@@ -50,6 +51,23 @@ namespace Nunana.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var room = _context.Rooms
+                .Select(a => new RoomFormViewModel
+                {
+                    RoomNumber = a.RoomNumber,
+                    Id = a.Id
+                })
+                .SingleOrDefault(u => u.Id == id);
+
+            if (room == null) return HttpNotFound();
+
+            return View(room);
         }
     }
 }
