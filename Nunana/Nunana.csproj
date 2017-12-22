@@ -650,6 +650,7 @@
     <Content Include="Views\Rooms\Edit.cshtml" />
     <Content Include="Views\Tenants\Edit.cshtml" />
     <Content Include="Views\Rooms\Vacant.cshtml" />
+    <Content Include="Views\Rentals\Cancelled.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

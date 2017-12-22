@@ -22,6 +22,7 @@ namespace Nunana.Controllers.api
                 "ddd MMM dd yyyy HH:mm:ss 'GMT'K '(GMT Standard Time)'",
                 CultureInfo.InvariantCulture);
         }
+
         [HttpPost]
         public IHttpActionResult CreateRental(SaveRentalViewModel viewModel)
         {
@@ -50,11 +51,35 @@ namespace Nunana.Controllers.api
                 StartDate = startDate,
                 EndDate = endDate,
                 CreatedBy = user
-
             };
             room.IsCurrentlyRented = true;
 
             _context.Rentals.Add(rental);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IHttpActionResult Cancel(int roomId, int tenantId)
+        {
+            var rental = _context.Rentals.SingleOrDefault(r => r.RoomId == roomId && r.TenantId == tenantId);
+            if (rental == null) return NotFound();
+
+            if (rental.IsCancelled) return BadRequest("Rental already cancelled");
+
+            var username = User.Identity.Name;
+            rental.IsCancelled = true;
+            rental.CancelledBy = username;
+            rental.DateCancelled = DateTime.Now;
+
+            var room = _context.Rooms.SingleOrDefault(r => r.Id == roomId);
+            if (room == null) return NotFound();
+
+            if (!room.IsCurrentlyRented) return BadRequest("Room is not rented currently ");
+
+            room.IsCurrentlyRented = false;
+
             _context.SaveChanges();
 
             return Ok();

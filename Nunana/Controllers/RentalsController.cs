@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Nunana.Controllers
 {
+    [Authorize]
     public class RentalsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -14,12 +15,13 @@ namespace Nunana.Controllers
         {
             _context = new ApplicationDbContext();
         }
+
         public ActionResult Index()
         {
             var rentals = _context.Rentals
                 .Include(r => r.Room)
                 .Include(r => r.Tenant)
-                .Where(r => r.IsCancelled == false)
+                .Where(r => !r.IsCancelled)
                 .Select(a => new RentalListViewModel
                 {
                     RoomNumber = a.Room.RoomNumber,
@@ -40,6 +42,27 @@ namespace Nunana.Controllers
         {
             return View();
         }
-    }
+        public ActionResult Cancelled()
+        {
+            var cancelledRooms = _context.Rentals
+                .Include(r => r.Room)
+                .Include(r => r.Tenant)
+                .Where(r => r.IsCancelled)
+                .Select(a => new RentalListViewModel
+                {
+                    RoomNumber = a.Room.RoomNumber,
+                    TenantName = a.Tenant.FirstName + ", " + a.Tenant.LastName,
+                    RentalStartDate = a.StartDate.ToString(),
+                    RentalEndDate = a.EndDate.ToString(),
+                    RoomId = a.RoomId,
+                    TenantId = a.TenantId,
+                    CreatorName = a.CreatedBy,
+                    CancelledBy = a.CancelledBy,
+                    DateCancelled = a.DateCancelled.ToString(),
+                    NumberOfMonths = DbFunctions.DiffMonths(a.StartDate, a.EndDate).ToString()
+                }).ToList();
 
+            return View(cancelledRooms);
+        }
+    }
 }

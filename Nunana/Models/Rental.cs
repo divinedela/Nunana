@@ -14,10 +14,8 @@ namespace Nunana.Models
         [Column(Order = 2)]
         public int TenantId { get; set; }
 
-        [Required]
         public Room Room { get; set; }
 
-        [Required]
         public Tenant Tenant { get; set; }
 
         public DateTime DateCreated { get; set; }

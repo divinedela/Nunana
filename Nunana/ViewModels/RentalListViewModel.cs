@@ -24,5 +24,11 @@ namespace Nunana.ViewModels
 
         [Display(Name = "Created By")]
         public string CreatorName { get; set; }
+
+        [Display(Name = "Cancelled By")]
+        public string CancelledBy { get; set; }
+
+        [Display(Name = "Date Cancelled")]
+        public string DateCancelled { get; set; }
     }
 }

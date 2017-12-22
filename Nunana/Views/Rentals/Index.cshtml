@@ -30,7 +30,7 @@
         <th>
             @Html.DisplayNameFor(model => model.CreatorName)
         </th>
-
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -55,7 +55,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CreatorName)
             </td>
-
+            <td>
+                <a href="#" class="btn btn-sm btn-danger js-cancel" data-room-id="@item.RoomId" data-tenant-id="@item.TenantId"><i class="fa fa-trash-o">&nbsp;</i>Cancel</a>
+            </td>
         </tr>
     }
     </tbody>
@@ -65,6 +67,56 @@
     <script>
         $(document).ready(function() {
             $('.dataTable').DataTable();
+
+            $('.js-cancel').on('click',
+                function(e) {
+                    e.preventDefault();
+                    var link = $(e.target);
+                    swal({
+                        title: "Are you sure?",
+                        html: "Cancel Rental?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes!",
+                        confirmButtonClass: 'btn btn-danger',
+                        cancelButtonClass: 'btn btn-primary'
+                    }).then((result) => {
+                        if (result.value) {
+                            console.log(result);
+                            $.ajax({
+                                url: '/api/Rentals/Cancel?roomId=' +
+                                    link.attr('data-room-id') +
+                                    '&tenantId=' +
+                                    link.attr('data-tenant-id'),
+                                method: 'DELETE',
+                                success:
+                                    function() {
+                                        link.parents('tr').fadeOut(function() {
+                                            $(this).remove();
+                                        });
+                                        swal(
+                                            'Canceled!',
+                                            'Rental successfully cancelled!',
+                                            'success'
+                                        );
+                                    },
+                                error: function() {
+                                    swal(
+                                        'Error',
+                                        'Something went wrong!',
+                                        'error'
+                                    );
+                                }
+                            });
+                        } else {
+                            swal(
+                                'Stopped',
+                                'Rental not cancelled',
+                                'info'
+                            );
+                        }
+                    });
+                });
         });
     </script>
 }
