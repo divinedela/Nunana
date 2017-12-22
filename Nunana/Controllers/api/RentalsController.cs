@@ -1,4 +1,5 @@
 ﻿using Nunana.Models;
+using Nunana.ViewModels;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -58,14 +59,5 @@ namespace Nunana.Controllers.api
 
             return Ok();
         }
-    }
-
-    public class SaveRentalViewModel
-    {
-        public int RoomId { get; set; }
-        public int RoomType { get; set; }
-        public int TenantId { get; set; }
-        public string StartDate { get; set; }
-        public int Months { get; set; }
     }
 }

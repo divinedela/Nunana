@@ -243,6 +243,7 @@
     <Compile Include="ViewModels\RentalListViewModel.cs" />
     <Compile Include="ViewModels\RoomFormViewModel.cs" />
     <Compile Include="ViewModels\RoomsListViewModel.cs" />
+    <Compile Include="ViewModels\SaveRentalViewModel.cs" />
     <Compile Include="ViewModels\TenantFormViewModel.cs" />
     <Compile Include="ViewModels\TenantsListViewModel.cs" />
   </ItemGroup>

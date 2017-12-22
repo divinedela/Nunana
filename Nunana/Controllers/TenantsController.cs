@@ -48,7 +48,7 @@ namespace Nunana.Controllers
                 Address = viewModel.Address,
                 PhoneNumber = viewModel.PhoneNumber,
                 Email = viewModel.Email,
-                EmergencyContactFirstName = viewModel.FirstName,
+                EmergencyContactFirstName = viewModel.EmergencyContactFirstName,
                 EmergencyContactLastName = viewModel.EmergencyContactLastName,
                 EmergencyContactAddress = viewModel.EmergencyContactAddress,
                 EmergencyContactEmail = viewModel.EmergencyContactEmail,
