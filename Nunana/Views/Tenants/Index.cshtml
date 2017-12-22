@@ -14,6 +14,7 @@
             <th>Phone Number</th>
             <th>Email</th>
             <th>Emergency Contact</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,9 @@
                 <td>@Html.DisplayFor(model => item.PhoneNumber)</td>
                 <td>@Html.DisplayFor(model => item.Email)</td>
                 <td>@Html.DisplayFor(model => item.EmergencyContactNumber)</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", new { id=item.Id})"><i class="fa fa-edit">&nbsp;</i>Edit</a>
+                </td>
             </tr>
         }
     </tbody>
