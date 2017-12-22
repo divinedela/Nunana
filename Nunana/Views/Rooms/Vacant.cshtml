@@ -1,0 +1,47 @@
+﻿
+@model IEnumerable<Nunana.ViewModels.RoomsListViewModel>
+
+@{
+    ViewBag.Title = "Rooms List";
+}
+
+<a class="btn btn-success" href="@Url.Action("Create")"><i class="fa fa-user">&nbsp;</i>Add New Room</a>
+
+<h3 class="text-info">VACANT ROOMS</h3> <br />
+
+<table class="table table-striped table-responsive dataTable">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RoomNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoomType)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomType)
+            </td>
+
+        </tr>
+    }
+    </tbody>
+
+</table>
+
+@section scripts{
+    @Scripts.Render("~/bundles/libs")
+    <script>
+        $(document).ready(function () {
+            $('.dataTable').DataTable();
+        });
+    </script>
+}

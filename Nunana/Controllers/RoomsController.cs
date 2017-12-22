@@ -69,5 +69,17 @@ namespace Nunana.Controllers
 
             return View(room);
         }
+
+        public ActionResult Vacant()
+        {
+            var vacantRooms = _context.Rooms.Where(i => !i.IsCurrentlyRented)
+            .Select(a => new RoomsListViewModel
+            {
+                Id = a.Id,
+                RoomNumber = a.RoomNumber,
+                RoomType = a.Type.ToString()
+            }).ToList();
+            return View(vacantRooms);
+        }
     }
 }

@@ -649,6 +649,7 @@
     <Content Include="Views\Rentals\Create.cshtml" />
     <Content Include="Views\Rooms\Edit.cshtml" />
     <Content Include="Views\Tenants\Edit.cshtml" />
+    <Content Include="Views\Rooms\Vacant.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

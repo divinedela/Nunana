@@ -23,7 +23,15 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Rentals", "Index", "Rentals")</li>
-                    <li>@Html.ActionLink("Rooms", "Index", "Rooms")</li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rooms <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("All Rooms", "Index", "Rooms")</li>
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("Vacant", "Vacant", "Rooms")</li>
+                        </ul>
+                    </li>
                     <li>@Html.ActionLink("Tenants", "Index", "Tenants")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
