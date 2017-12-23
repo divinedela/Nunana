@@ -65,21 +65,9 @@ namespace Nunana.Controllers
             var tenant = _context.Tenants.SingleOrDefault(u => u.Id == id);
             if (tenant == null) return HttpNotFound();
 
-            var tenantViewModel = new TenantFormViewModel
-            {
-                FirstName = tenant.FirstName,
-                LastName = tenant.LastName,
-                Address = tenant.Address,
-                PhoneNumber = tenant.PhoneNumber,
-                Email = tenant.Email,
-                EmergencyContactFirstName = tenant.FirstName,
-                EmergencyContactLastName = tenant.EmergencyContactLastName,
-                EmergencyContactAddress = tenant.EmergencyContactAddress,
-                EmergencyContactEmail = tenant.EmergencyContactEmail,
-                EmergencyContactPhoneNumber = tenant.EmergencyContactPhoneNumber
-            };
+            var viewModel = Mapper.Map<Tenant, TenantFormViewModel>(tenant);
 
-            return View(tenantViewModel);
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -96,7 +84,7 @@ namespace Nunana.Controllers
             tenant.Address = viewModel.Address;
             tenant.PhoneNumber = viewModel.PhoneNumber;
             tenant.Email = viewModel.Email;
-            tenant.EmergencyContactFirstName = viewModel.FirstName;
+            tenant.EmergencyContactFirstName = viewModel.EmergencyContactFirstName;
             tenant.EmergencyContactLastName = viewModel.EmergencyContactLastName;
             tenant.EmergencyContactAddress = viewModel.EmergencyContactAddress;
             tenant.EmergencyContactEmail = viewModel.EmergencyContactEmail;
