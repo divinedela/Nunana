@@ -76,7 +76,6 @@ namespace Nunana.Controllers
             var rentals = _context.Rentals
                 .Where(r => !r.IsCancelled)
                 .Where(e => e.StartDate >= firstDayOfMonth && e.EndDate <= lastDayOfMonth)
-                // .Where(e => e.EndDate <= lastDayOfMonth && e.StartDate >= firstDayOfMonth)
                 .Select(a => new RentalListViewModel
                 {
                     RoomNumber = a.Room.RoomNumber,

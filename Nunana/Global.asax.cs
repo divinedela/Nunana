@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using AutoMapper;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Nunana.App_Start;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -11,6 +13,8 @@ namespace Nunana
     {
         protected void Application_Start()
         {
+            Mapper.Initialize(c => c.AddProfile<MappingProfile>());
+
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             var formatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;

@@ -1,5 +1,7 @@
-﻿using Nunana.Models;
+﻿using AutoMapper;
+using Nunana.Models;
 using Nunana.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -18,16 +20,11 @@ namespace Nunana.Controllers
 
         public ActionResult Index()
         {
-            var tenants = _context.Tenants.Select(a => new TenantsListViewModel
-            {
-                FullName = a.FirstName + ", " + a.LastName,
-                PhoneNumber = a.PhoneNumber,
-                Email = a.Email,
-                Id = a.Id,
-                EmergencyContactNumber = a.EmergencyContactFirstName + ", " + a.EmergencyContactLastName
-            }).ToList();
+            var tenants = _context.Tenants.ToList();
 
-            return View(tenants);
+            var viewModel = Mapper.Map<List<Tenant>, List<TenantsListViewModel>>(tenants);
+
+            return View(viewModel);
         }
 
         public ActionResult Create()

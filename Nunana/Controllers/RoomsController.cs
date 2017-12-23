@@ -1,5 +1,7 @@
-﻿using Nunana.Models;
+﻿using AutoMapper;
+using Nunana.Models;
 using Nunana.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -17,16 +19,11 @@ namespace Nunana.Controllers
         }
         public ActionResult Index()
         {
-            var rooms = _context.Rooms
-                .Select(a => new RoomsListViewModel
-                {
-                    Id = a.Id,
-                    IsCurrentlyRented = a.IsCurrentlyRented,
-                    RoomNumber = a.RoomNumber,
-                    RoomType = a.Type.ToString()
-                }).ToList();
+            var rooms = _context.Rooms.ToList();
 
-            return View(rooms);
+            var viewModel = Mapper.Map<List<Room>, List<RoomsListViewModel>>(rooms);
+
+            return View(viewModel);
         }
 
         public ActionResult Create()

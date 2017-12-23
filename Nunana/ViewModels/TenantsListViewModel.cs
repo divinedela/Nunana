@@ -1,4 +1,6 @@
-﻿namespace Nunana.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Nunana.ViewModels
 {
     public class TenantsListViewModel
     {
@@ -6,8 +8,11 @@
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public string DateRegistered { get; set; }
-        public string EmergencyContactNumber { get; set; }
 
+        [Display(Name = "Date Registered")]
+        public string DateRegistered { get; set; }
+
+        [Display(Name = "Emergency Contact Number")]
+        public string EmergencyContactPhoneNumber { get; set; }
     }
 }
