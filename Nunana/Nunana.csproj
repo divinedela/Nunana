@@ -651,6 +651,7 @@
     <Content Include="Views\Tenants\Edit.cshtml" />
     <Content Include="Views\Rooms\Vacant.cshtml" />
     <Content Include="Views\Rentals\Cancelled.cshtml" />
+    <Content Include="Views\Rentals\ExpiringThisMonth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
