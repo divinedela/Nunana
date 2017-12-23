@@ -13,6 +13,9 @@ namespace Nunana.App_Start
 
             CreateMap<Tenant, TenantsListViewModel>()
                 .ForMember(tvm => tvm.FullName, opt => opt.MapFrom(t => t.FullName));
+
+            CreateMap<Room, RoomFormViewModel>();
+            //.ForMember(rvm => rvm.Type, opt => opt.MapFrom(r => r.Type.ToString()));
         }
     }
 }

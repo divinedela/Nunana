@@ -17,6 +17,7 @@ namespace Nunana.Controllers
         {
             _context = new ApplicationDbContext();
         }
+
         public ActionResult Index()
         {
             var rooms = _context.Rooms.ToList();
@@ -55,28 +56,38 @@ namespace Nunana.Controllers
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var room = _context.Rooms
-                .Select(a => new RoomFormViewModel
-                {
-                    RoomNumber = a.RoomNumber,
-                    Id = a.Id
-                })
                 .SingleOrDefault(u => u.Id == id);
 
             if (room == null) return HttpNotFound();
+            var viewModel = Mapper.Map<Room, RoomFormViewModel>(room);
 
-            return View(room);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(RoomFormViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var room = _context.Rooms.SingleOrDefault(u => u.Id == viewModel.Id);
+            if (room == null) return HttpNotFound();
+
+            room.RoomNumber = viewModel.RoomNumber;
+            room.Type = viewModel.Type;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Vacant()
         {
-            var vacantRooms = _context.Rooms.Where(i => !i.IsCurrentlyRented)
-            .Select(a => new RoomsListViewModel
-            {
-                Id = a.Id,
-                RoomNumber = a.RoomNumber,
-                RoomType = a.Type.ToString()
-            }).ToList();
-            return View(vacantRooms);
+            var vacantRooms = _context.Rooms.Where(i => !i.IsCurrentlyRented).ToList();
+
+            var viewModel = Mapper.Map<List<Room>, List<RoomsListViewModel>>(vacantRooms);
+
+            return View(viewModel);
         }
     }
 }
