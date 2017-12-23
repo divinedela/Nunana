@@ -79,18 +79,10 @@ namespace Nunana.Controllers
             var tenant = _context.Tenants.SingleOrDefault(u => u.Id == viewModel.Id);
             if (tenant == null) return HttpNotFound();
 
-            tenant.FirstName = viewModel.FirstName;
-            tenant.LastName = viewModel.LastName;
-            tenant.Address = viewModel.Address;
-            tenant.PhoneNumber = viewModel.PhoneNumber;
-            tenant.Email = viewModel.Email;
-            tenant.EmergencyContactFirstName = viewModel.EmergencyContactFirstName;
-            tenant.EmergencyContactLastName = viewModel.EmergencyContactLastName;
-            tenant.EmergencyContactAddress = viewModel.EmergencyContactAddress;
-            tenant.EmergencyContactEmail = viewModel.EmergencyContactEmail;
-            tenant.EmergencyContactPhoneNumber = viewModel.EmergencyContactPhoneNumber;
+            Mapper.Map(viewModel, tenant);
 
             _context.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

@@ -73,8 +73,7 @@ namespace Nunana.Controllers
             var room = _context.Rooms.SingleOrDefault(u => u.Id == viewModel.Id);
             if (room == null) return HttpNotFound();
 
-            room.RoomNumber = viewModel.RoomNumber;
-            room.Type = viewModel.Type;
+            Mapper.Map(viewModel, room);
 
             _context.SaveChanges();
 
