@@ -39,22 +39,11 @@ namespace Nunana.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var tenant = new Tenant
-            {
-                FirstName = viewModel.FirstName,
-                LastName = viewModel.LastName,
-                Address = viewModel.Address,
-                PhoneNumber = viewModel.PhoneNumber,
-                Email = viewModel.Email,
-                EmergencyContactFirstName = viewModel.EmergencyContactFirstName,
-                EmergencyContactLastName = viewModel.EmergencyContactLastName,
-                EmergencyContactAddress = viewModel.EmergencyContactAddress,
-                EmergencyContactEmail = viewModel.EmergencyContactEmail,
-                EmergencyContactPhoneNumber = viewModel.EmergencyContactPhoneNumber
-            };
+            var tenant = Mapper.Map<TenantFormViewModel, Tenant>(viewModel);
 
             _context.Tenants.Add(tenant);
             _context.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

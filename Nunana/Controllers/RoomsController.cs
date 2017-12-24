@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using Nunana.Models;
-using Nunana.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
+using Nunana.Models;
+using Nunana.ViewModels;
 
 namespace Nunana.Controllers
 {
@@ -38,13 +38,9 @@ namespace Nunana.Controllers
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var userName = User.Identity.Name;
-            var newRoom = new Room
-            {
-                CreatedBy = userName,
-                RoomNumber = viewModel.RoomNumber,
-                Type = viewModel.Type
-            };
+            var newRoom = Mapper.Map<RoomFormViewModel, Room>(viewModel);
+            newRoom.CreatedBy = User.Identity.Name;
+
             _context.Rooms.Add(newRoom);
             _context.SaveChanges();
 

@@ -14,7 +14,6 @@ namespace Nunana
         protected void Application_Start()
         {
             Mapper.Initialize(c => c.AddProfile<MappingProfile>());
-           // MappingProfile.Initialise();
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
