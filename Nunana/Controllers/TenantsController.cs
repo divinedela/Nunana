@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Nunana.Models;
+using Nunana.Repositories;
 using Nunana.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 
 namespace Nunana.Controllers
@@ -12,17 +11,18 @@ namespace Nunana.Controllers
     public class TenantsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        private readonly TenantRepository _repository;
         public TenantsController()
         {
             _context = new ApplicationDbContext();
+            _repository = new TenantRepository(_context);
         }
 
         public ActionResult Index()
         {
-            var tenants = _context.Tenants.ToList();
+            var tenants = _repository.GetTenants();
 
-            var viewModel = Mapper.Map<List<Tenant>, List<TenantsListViewModel>>(tenants);
+            var viewModel = Mapper.Map<IEnumerable<Tenant>, List<TenantsListViewModel>>(tenants);
 
             return View(viewModel);
         }
@@ -41,17 +41,15 @@ namespace Nunana.Controllers
 
             var tenant = Mapper.Map<TenantFormViewModel, Tenant>(viewModel);
 
-            _context.Tenants.Add(tenant);
+            _repository.Add(tenant);
             _context.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            var tenant = _context.Tenants.SingleOrDefault(u => u.Id == id);
+            var tenant = _repository.GetTenant(id);
             if (tenant == null) return HttpNotFound();
 
             var viewModel = Mapper.Map<Tenant, TenantFormViewModel>(tenant);
@@ -65,7 +63,7 @@ namespace Nunana.Controllers
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var tenant = _context.Tenants.SingleOrDefault(u => u.Id == viewModel.Id);
+            var tenant = _repository.GetTenant(viewModel.Id);
             if (tenant == null) return HttpNotFound();
 
             Mapper.Map(viewModel, tenant);
