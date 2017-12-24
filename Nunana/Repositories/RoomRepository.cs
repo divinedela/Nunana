@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Nunana.Repositories
 {
-    public class RoomsRepository
+    public class RoomRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public RoomsRepository(ApplicationDbContext context)
+        public RoomRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -25,6 +25,17 @@ namespace Nunana.Repositories
         public IEnumerable<Room> GetVacantRooms()
         {
             return _context.Rooms.Where(i => !i.IsCurrentlyRented).ToList();
+        }
+
+        public void Add(Room room)
+        {
+            _context.Rooms.Add(room);
+        }
+
+        public IEnumerable<Room> GetVacantRoomsOfType(int roomType)
+        {
+            return _context.Rooms.Where(i => !i.IsCurrentlyRented)
+                .Where(c => (int)c.Type == roomType).ToList();
         }
     }
 }

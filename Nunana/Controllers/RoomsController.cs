@@ -11,12 +11,12 @@ namespace Nunana.Controllers
     public class RoomsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly RoomsRepository _repository;
+        private readonly RoomRepository _repository;
 
         public RoomsController()
         {
             _context = new ApplicationDbContext();
-            _repository = new RoomsRepository(_context);
+            _repository = new RoomRepository(_context);
         }
 
         public ActionResult Index()
@@ -43,7 +43,7 @@ namespace Nunana.Controllers
 
             var newRoom = new Room(roomFromMap.RoomNumber, roomFromMap.Type, User.Identity.Name);
 
-            _context.Rooms.Add(newRoom);
+            _repository.Add(newRoom);
             _context.SaveChanges();
 
             return RedirectToAction("Index");

@@ -12,14 +12,14 @@ namespace Nunana.Controllers.api
     {
         private readonly ApplicationDbContext _context;
         private readonly RentalRepository _rentalRepository;
-        private readonly RoomsRepository _roomRepository;
+        private readonly RoomRepository _roomRepository;
         private readonly TenantRepository _tenantRepository;
 
         public RentalsController()
         {
             _context = new ApplicationDbContext();
             _rentalRepository = new RentalRepository(_context);
-            _roomRepository = new RoomsRepository(_context);
+            _roomRepository = new RoomRepository(_context);
             _tenantRepository = new TenantRepository(_context);
         }
 
