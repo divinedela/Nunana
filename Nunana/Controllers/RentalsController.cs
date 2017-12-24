@@ -1,4 +1,5 @@
 ﻿using Nunana.Models;
+using Nunana.Repositories;
 using Nunana.ViewModels;
 using System;
 using System.Data.Entity;
@@ -11,17 +12,17 @@ namespace Nunana.Controllers
     public class RentalsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RentalRepository _repository;
 
         public RentalsController()
         {
             _context = new ApplicationDbContext();
+            _repository = new RentalRepository(_context);
         }
 
         public ActionResult Index()
         {
-            var rentals = _context.Rentals
-                .Include(r => r.Room)
-                .Include(r => r.Tenant)
+            var rentals = _repository.GetRentalsWithRoomsAndTenants()
                 .Where(r => !r.IsCancelled)
                 .Select(a => new RentalListViewModel
                 {
@@ -38,16 +39,14 @@ namespace Nunana.Controllers
             return View(rentals);
         }
 
-
         public ActionResult Create()
         {
             return View();
         }
+
         public ActionResult Cancelled()
         {
-            var cancelledRooms = _context.Rentals
-                .Include(r => r.Room)
-                .Include(r => r.Tenant)
+            var cancelledRooms = _repository.GetRentalsWithRoomsAndTenants()
                 .Where(r => r.IsCancelled)
                 .Select(a => new RentalListViewModel
                 {
@@ -73,7 +72,7 @@ namespace Nunana.Controllers
             var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddSeconds(-1);
 
-            var rentals = _context.Rentals
+            var rentals = _repository.GetRentals()
                 .Where(r => !r.IsCancelled)
                 .Where(e => e.StartDate >= firstDayOfMonth && e.EndDate <= lastDayOfMonth)
                 .Select(a => new RentalListViewModel
