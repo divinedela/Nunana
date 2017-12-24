@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Nunana.DTOs;
 using Nunana.Models;
 using Nunana.ViewModels;
 
@@ -29,6 +30,15 @@ namespace Nunana.App_Start
             CreateMap<TenantFormViewModel, Tenant>()
                 .ForMember(t => t.Id, opt => opt.Ignore())
                 .ForMember(t => t.DateCreated, opt => opt.Ignore());
+
+            CreateMap<SaveRentalDto, Rental>()
+                .ForMember(t => t.Room, opt => opt.Ignore())
+                .ForMember(t => t.CreatedBy, opt => opt.Ignore())
+                .ForMember(t => t.DateCreated, opt => opt.Ignore())
+                .ForMember(t => t.StartDate, opt => opt.Ignore())
+                .ForMember(t => t.EndDate, opt => opt.Ignore())
+                .ForMember(t => t.DateCancelled, opt => opt.Ignore())
+                .ForMember(t => t.IsCancelled, opt => opt.Ignore());
         }
     }
 }

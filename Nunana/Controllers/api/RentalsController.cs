@@ -1,5 +1,6 @@
-﻿using Nunana.Models;
-using Nunana.ViewModels;
+﻿using AutoMapper;
+using Nunana.DTOs;
+using Nunana.Models;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -24,34 +25,31 @@ namespace Nunana.Controllers.api
         }
 
         [HttpPost]
-        public IHttpActionResult CreateRental(SaveRentalViewModel viewModel)
+        public IHttpActionResult CreateRental(SaveRentalDto saveRentalDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var startDate = ConvertToDateTime(viewModel.StartDate);
-            var numberOfMonths = viewModel.Months;
-            var endDate = startDate.AddMonths(numberOfMonths);
-
-            var room = _context.Rooms.SingleOrDefault(r => r.Id == viewModel.RoomId);
+            var room = _context.Rooms.SingleOrDefault(r => r.Id == saveRentalDto.RoomId);
             if (room == null)
                 return BadRequest("Room does not exist");
 
             if (room.IsCurrentlyRented)
                 return BadRequest("Room is already rented out");
 
-            var tenant = _context.Tenants.SingleOrDefault(r => r.Id == viewModel.TenantId);
+            var tenant = _context.Tenants.SingleOrDefault(r => r.Id == saveRentalDto.TenantId);
             if (tenant == null)
                 return BadRequest("Tenant does not exist");
 
-            var user = User.Identity.Name;
-            var rental = new Rental
-            {
-                RoomId = viewModel.RoomId,
-                TenantId = viewModel.TenantId,
-                StartDate = startDate,
-                EndDate = endDate,
-                CreatedBy = user
-            };
+            var rental = Mapper.Map<SaveRentalDto, Rental>(saveRentalDto);
+
+            var startDate = ConvertToDateTime(saveRentalDto.StartDate);
+            var numberOfMonths = saveRentalDto.Months;
+            var endDate = startDate.AddMonths(numberOfMonths);
+
+            rental.StartDate = startDate;
+            rental.EndDate = endDate;
+            rental.CreatedBy = User.Identity.Name;
+
             room.IsCurrentlyRented = true;
 
             _context.Rentals.Add(rental);

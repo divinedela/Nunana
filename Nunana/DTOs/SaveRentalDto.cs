@@ -1,6 +1,6 @@
-﻿namespace Nunana.ViewModels
+﻿namespace Nunana.DTOs
 {
-    public class SaveRentalViewModel
+    public class SaveRentalDto
     {
         public int RoomId { get; set; }
         public int RoomType { get; set; }
