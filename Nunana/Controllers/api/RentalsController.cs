@@ -31,28 +31,26 @@ namespace Nunana.Controllers.api
 
             var room = _context.Rooms.SingleOrDefault(r => r.Id == saveRentalDto.RoomId);
             if (room == null)
-                return BadRequest("Room does not exist");
+                return NotFound();
 
             if (room.IsCurrentlyRented)
                 return BadRequest("Room is already rented out");
 
             var tenant = _context.Tenants.SingleOrDefault(r => r.Id == saveRentalDto.TenantId);
             if (tenant == null)
-                return BadRequest("Tenant does not exist");
-
-            var rental = Mapper.Map<SaveRentalDto, Rental>(saveRentalDto);
+                return NotFound();
 
             var startDate = ConvertToDateTime(saveRentalDto.StartDate);
             var numberOfMonths = saveRentalDto.Months;
             var endDate = startDate.AddMonths(numberOfMonths);
 
-            rental.StartDate = startDate;
-            rental.EndDate = endDate;
-            rental.CreatedBy = User.Identity.Name;
+            var rentalFromMap = Mapper.Map<SaveRentalDto, Rental>(saveRentalDto);
+            var userName = User.Identity.Name;
+            var newRental = new Rental(rentalFromMap.RoomId, rentalFromMap.TenantId, startDate, endDate, userName);
 
             room.IsCurrentlyRented = true;
 
-            _context.Rentals.Add(rental);
+            _context.Rentals.Add(newRental);
             _context.SaveChanges();
 
             return Ok();
@@ -66,10 +64,8 @@ namespace Nunana.Controllers.api
 
             if (rental.IsCancelled) return BadRequest("Rental already cancelled");
 
-            var username = User.Identity.Name;
-            rental.IsCancelled = true;
-            rental.CancelledBy = username;
-            rental.DateCancelled = DateTime.Now;
+            var userName = User.Identity.Name;
+            rental.Cancel(userName);
 
             var room = _context.Rooms.SingleOrDefault(r => r.Id == roomId);
             if (room == null) return NotFound();

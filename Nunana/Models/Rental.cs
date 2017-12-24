@@ -8,31 +8,46 @@ namespace Nunana.Models
     {
         [Key]
         [Column(Order = 1)]
-        public int RoomId { get; set; }
+        public int RoomId { get; private set; }
 
         [Key]
         [Column(Order = 2)]
-        public int TenantId { get; set; }
+        public int TenantId { get; private set; }
 
         public Room Room { get; set; }
 
         public Tenant Tenant { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime DateCreated { get; private set; }
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }
 
         [Required]
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; private set; }
 
-        public bool IsCancelled { get; set; }
-        public string CancelledBy { get; set; }
-        public DateTime? DateCancelled { get; set; }
+        public bool IsCancelled { get; private set; }
+        public string CancelledBy { get; private set; }
+        public DateTime? DateCancelled { get; private set; }
 
-        public Rental()
+        public void Cancel(string userName)
         {
-            DateCreated = DateTime.Now;
+            IsCancelled = true;
+            CancelledBy = userName;
+            DateCancelled = DateTime.Now;
         }
 
+        protected Rental()
+        {
+        }
+
+        public Rental(int roomId, int tenantId, DateTime startDate, DateTime endDate, string creator)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            CreatedBy = creator;
+            RoomId = roomId;
+            TenantId = tenantId;
+            DateCreated = DateTime.Now;
+        }
     }
 }
