@@ -244,6 +244,7 @@
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\Tenant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\RoomsRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\RentalFormViewModel.cs" />
     <Compile Include="ViewModels\RentalListViewModel.cs" />

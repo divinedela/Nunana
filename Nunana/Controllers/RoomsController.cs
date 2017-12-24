@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Nunana.Models;
+using Nunana.Repositories;
 using Nunana.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 
 namespace Nunana.Controllers
@@ -12,17 +11,19 @@ namespace Nunana.Controllers
     public class RoomsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RoomsRepository _repository;
 
         public RoomsController()
         {
             _context = new ApplicationDbContext();
+            _repository = new RoomsRepository(_context);
         }
 
         public ActionResult Index()
         {
-            var rooms = _context.Rooms.ToList();
+            var rooms = _repository.GetRooms();
 
-            var viewModel = Mapper.Map<List<Room>, List<RoomsListViewModel>>(rooms);
+            var viewModel = Mapper.Map<IEnumerable<Room>, List<RoomsListViewModel>>(rooms);
 
             return View(viewModel);
         }
@@ -48,14 +49,12 @@ namespace Nunana.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            var room = _context.Rooms
-                .SingleOrDefault(u => u.Id == id);
+            var room = _repository.GetRoom(id);
 
             if (room == null) return HttpNotFound();
+
             var viewModel = Mapper.Map<Room, RoomFormViewModel>(room);
 
             return View(viewModel);
@@ -67,7 +66,7 @@ namespace Nunana.Controllers
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var room = _context.Rooms.SingleOrDefault(u => u.Id == viewModel.Id);
+            var room = _repository.GetRoom(viewModel.Id);
             if (room == null) return HttpNotFound();
 
             Mapper.Map(viewModel, room);
@@ -79,9 +78,9 @@ namespace Nunana.Controllers
 
         public ActionResult Vacant()
         {
-            var vacantRooms = _context.Rooms.Where(i => !i.IsCurrentlyRented).ToList();
+            var vacantRooms = _repository.GetVacantRooms();
 
-            var viewModel = Mapper.Map<List<Room>, List<RoomsListViewModel>>(vacantRooms);
+            var viewModel = Mapper.Map<IEnumerable<Room>, List<RoomsListViewModel>>(vacantRooms);
 
             return View(viewModel);
         }
