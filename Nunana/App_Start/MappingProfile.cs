@@ -13,12 +13,20 @@ namespace Nunana.App_Start
 
             CreateMap<Room, RoomsListViewModel>()
                 .ForMember(rl => rl.RoomType, opt => opt.MapFrom(r => r.Type.ToString()));
+
+            CreateMap<Room, RoomFormViewModel>();
+
+            CreateMap<Room, RoomDto>();
+
             CreateMap<Tenant, TenantsListViewModel>()
                 .ForMember(tvm => tvm.FullName, opt => opt.MapFrom(t => t.FullName));
-            CreateMap<Room, RoomFormViewModel>();
+
             CreateMap<Tenant, TenantFormViewModel>();
+
             CreateMap<Tenant, TenantSearchDto>()
                 .ForMember(tvm => tvm.Name, opt => opt.MapFrom(t => t.FullName));
+
+
 
             //Map DTOs to Domain Objects
 

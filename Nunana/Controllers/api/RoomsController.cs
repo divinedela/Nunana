@@ -1,5 +1,7 @@
-﻿using Nunana.DTOs;
+﻿using AutoMapper;
+using Nunana.DTOs;
 using Nunana.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
@@ -17,14 +19,13 @@ namespace Nunana.Controllers.api
         [HttpGet]
         public IHttpActionResult GetRooms(int roomType)
         {
-            var vacantRooms = _context.Rooms.Where(c => !c.IsCurrentlyRented && (int)c.Type == roomType)
-                .Select(a => new RoomDto
-                {
-                    Id = a.Id,
-                    RoomNumber = a.RoomNumber,
-                }).ToList();
+            var vacantRooms = _context.Rooms
+                .Where(c => !c.IsCurrentlyRented && (int)c.Type == roomType)
+                .ToList();
 
-            return Ok(vacantRooms);
+            var dto = Mapper.Map<List<Room>, List<RoomDto>>(vacantRooms);
+
+            return Ok(dto);
         }
     }
 }
