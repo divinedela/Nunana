@@ -11,21 +11,39 @@ namespace Nunana.Models
 
         [Required]
         [StringLength(5, MinimumLength = 2)]
-        public string RoomNumber { get; set; }
+        public string RoomNumber { get; private set; }
 
-        public RoomType Type { get; set; }
-        public DateTime DateCreated { get; set; }
-        public bool IsCurrentlyRented { get; set; }
+        public RoomType Type { get; private set; }
+        public DateTime DateCreated { get; private set; }
+        public bool IsCurrentlyRented { get; private set; }
 
         [Required]
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; private set; }
 
         public ICollection<Rental> Rentals { get; set; }
 
-        public Room()
+        protected Room()
+        {
+
+        }
+        public Room(string roomNumber, RoomType roomType, string creator)
         {
             DateCreated = DateTime.Now;
+            CreatedBy = creator;
+            Type = roomType;
+            RoomNumber = roomNumber;
+
             Rentals = new Collection<Rental>();
+        }
+
+        public void SetVacant()
+        {
+            IsCurrentlyRented = false;
+        }
+
+        public void SetOccupied()
+        {
+            IsCurrentlyRented = true;
         }
     }
 

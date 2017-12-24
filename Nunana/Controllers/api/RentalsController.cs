@@ -41,19 +41,25 @@ namespace Nunana.Controllers.api
                 return NotFound();
 
             var startDate = ConvertToDateTime(saveRentalDto.StartDate);
-            var numberOfMonths = saveRentalDto.Months;
-            var endDate = startDate.AddMonths(numberOfMonths);
+            var endDate = GetRentalEndDate(saveRentalDto, startDate);
 
             var rentalFromMap = Mapper.Map<SaveRentalDto, Rental>(saveRentalDto);
             var userName = User.Identity.Name;
             var newRental = new Rental(rentalFromMap.RoomId, rentalFromMap.TenantId, startDate, endDate, userName);
 
-            room.IsCurrentlyRented = true;
+            room.SetOccupied();
 
             _context.Rentals.Add(newRental);
             _context.SaveChanges();
 
             return Ok();
+        }
+
+        private static DateTime GetRentalEndDate(SaveRentalDto saveRentalDto, DateTime startDate)
+        {
+            var numberOfMonths = saveRentalDto.Months;
+            var endDate = startDate.AddMonths(numberOfMonths);
+            return endDate;
         }
 
         [HttpDelete]
@@ -72,7 +78,7 @@ namespace Nunana.Controllers.api
 
             if (!room.IsCurrentlyRented) return BadRequest("Room is not rented currently ");
 
-            room.IsCurrentlyRented = false;
+            room.SetVacant();
 
             _context.SaveChanges();
 
