@@ -1,5 +1,7 @@
-﻿using Nunana.Models;
-using Nunana.Repositories;
+﻿using Nunana.Core;
+using Nunana.Core.Models;
+using Nunana.Core.Repositories;
+using Nunana.Persistence.Repositories;
 
 namespace Nunana.Persistence
 {

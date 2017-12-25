@@ -232,55 +232,55 @@
     <Compile Include="Controllers\RentalsController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
-    <Compile Include="DTOs\RoomDto.cs" />
-    <Compile Include="DTOs\SaveRentalDto.cs" />
-    <Compile Include="DTOs\TenantSearchDto.cs" />
+    <Compile Include="Core\DTOs\RoomDto.cs" />
+    <Compile Include="Core\DTOs\SaveRentalDto.cs" />
+    <Compile Include="Core\DTOs\TenantSearchDto.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712210909379_initial.cs" />
-    <Compile Include="Migrations\201712210909379_initial.Designer.cs">
+    <Compile Include="Persistence\Migrations\201712210909379_initial.cs" />
+    <Compile Include="Persistence\Migrations\201712210909379_initial.Designer.cs">
       <DependentUpon>201712210909379_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712210957422_AddRoomsToDatabase.cs" />
-    <Compile Include="Migrations\201712210957422_AddRoomsToDatabase.Designer.cs">
+    <Compile Include="Persistence\Migrations\201712210957422_AddRoomsToDatabase.cs" />
+    <Compile Include="Persistence\Migrations\201712210957422_AddRoomsToDatabase.Designer.cs">
       <DependentUpon>201712210957422_AddRoomsToDatabase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712211143083_AddTenantsToDatabase.cs" />
-    <Compile Include="Migrations\201712211143083_AddTenantsToDatabase.Designer.cs">
+    <Compile Include="Persistence\Migrations\201712211143083_AddTenantsToDatabase.cs" />
+    <Compile Include="Persistence\Migrations\201712211143083_AddTenantsToDatabase.Designer.cs">
       <DependentUpon>201712211143083_AddTenantsToDatabase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712211238196_AddRentalsToDatabase.cs" />
-    <Compile Include="Migrations\201712211238196_AddRentalsToDatabase.Designer.cs">
+    <Compile Include="Persistence\Migrations\201712211238196_AddRentalsToDatabase.cs" />
+    <Compile Include="Persistence\Migrations\201712211238196_AddRentalsToDatabase.Designer.cs">
       <DependentUpon>201712211238196_AddRentalsToDatabase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\RentalQuery.cs" />
-    <Compile Include="Models\RoomQuery.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Rental.cs" />
-    <Compile Include="Models\Room.cs" />
-    <Compile Include="Models\Tenant.cs" />
-    <Compile Include="Persistence\IUnitOfWork.cs" />
+    <Compile Include="Persistence\Migrations\Configuration.cs" />
+    <Compile Include="Core\ViewModels\AccountViewModels.cs" />
+    <Compile Include="Persistence\ApplicationDbContext.cs" />
+    <Compile Include="Core\Models\RentalQuery.cs" />
+    <Compile Include="Core\Models\RoomQuery.cs" />
+    <Compile Include="Core\Models\IdentityModels.cs" />
+    <Compile Include="Core\ViewModels\ManageViewModels.cs" />
+    <Compile Include="Core\Models\Rental.cs" />
+    <Compile Include="Core\Models\Room.cs" />
+    <Compile Include="Core\Models\Tenant.cs" />
+    <Compile Include="Core\IUnitOfWork.cs" />
     <Compile Include="Persistence\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IRentalRepository.cs" />
-    <Compile Include="Repositories\IRoomRepository.cs" />
-    <Compile Include="Repositories\ITenantRepository.cs" />
-    <Compile Include="Repositories\RentalRepository.cs" />
-    <Compile Include="Repositories\RoomRepository.cs" />
-    <Compile Include="Repositories\TenantRepository.cs" />
+    <Compile Include="Core\Repositories\IRentalRepository.cs" />
+    <Compile Include="Core\Repositories\IRoomRepository.cs" />
+    <Compile Include="Core\Repositories\ITenantRepository.cs" />
+    <Compile Include="Persistence\Repositories\RentalRepository.cs" />
+    <Compile Include="Persistence\Repositories\RoomRepository.cs" />
+    <Compile Include="Persistence\Repositories\TenantRepository.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\RentalFormViewModel.cs" />
-    <Compile Include="ViewModels\RentalListViewModel.cs" />
-    <Compile Include="ViewModels\RoomFormViewModel.cs" />
-    <Compile Include="ViewModels\RoomsListViewModel.cs" />
-    <Compile Include="ViewModels\TenantFormViewModel.cs" />
-    <Compile Include="ViewModels\TenantsListViewModel.cs" />
+    <Compile Include="Core\ViewModels\RentalFormViewModel.cs" />
+    <Compile Include="Core\ViewModels\RentalListViewModel.cs" />
+    <Compile Include="Core\ViewModels\RoomFormViewModel.cs" />
+    <Compile Include="Core\ViewModels\RoomsListViewModel.cs" />
+    <Compile Include="Core\ViewModels\TenantFormViewModel.cs" />
+    <Compile Include="Core\ViewModels\TenantsListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -707,16 +707,16 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712210909379_initial.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201712210909379_initial.resx">
       <DependentUpon>201712210909379_initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712210957422_AddRoomsToDatabase.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201712210957422_AddRoomsToDatabase.resx">
       <DependentUpon>201712210957422_AddRoomsToDatabase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712211143083_AddTenantsToDatabase.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201712211143083_AddTenantsToDatabase.resx">
       <DependentUpon>201712211143083_AddTenantsToDatabase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712211238196_AddRentalsToDatabase.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201712211238196_AddRentalsToDatabase.resx">
       <DependentUpon>201712211238196_AddRentalsToDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

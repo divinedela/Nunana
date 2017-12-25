@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using Nunana.Extensions;
-using Nunana.Models;
 using Nunana.Persistence;
-using Nunana.ViewModels;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Nunana.Core;
+using Nunana.Core.Models;
+using Nunana.Core.ViewModels;
 
 namespace Nunana.Controllers
 {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Nunana.DTOs;
+using Nunana.Core.DTOs;
+using Nunana.Core.Models;
+using Nunana.Core.ViewModels;
 using Nunana.Extensions;
-using Nunana.Models;
-using Nunana.ViewModels;
 
 namespace Nunana.App_Start
 {

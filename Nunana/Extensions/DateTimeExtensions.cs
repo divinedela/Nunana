@@ -1,4 +1,4 @@
-﻿using Nunana.DTOs;
+﻿using Nunana.Core.DTOs;
 using System;
 using System.Globalization;
 

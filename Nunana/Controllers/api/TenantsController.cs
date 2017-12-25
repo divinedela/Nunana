@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
-using Nunana.DTOs;
-using Nunana.Models;
 using Nunana.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using Nunana.Core;
+using Nunana.Core.DTOs;
+using Nunana.Core.Models;
 
 namespace Nunana.Controllers.api
 {

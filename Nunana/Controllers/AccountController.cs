@@ -8,7 +8,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Nunana.Models;
+using Nunana.Core.Models;
+using Nunana.Core.ViewModels;
 
 namespace Nunana.Controllers
 {

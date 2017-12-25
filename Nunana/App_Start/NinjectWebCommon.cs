@@ -1,6 +1,8 @@
 ﻿using Nunana.App_Start;
+using Nunana.Core;
+using Nunana.Core.Repositories;
 using Nunana.Persistence;
-using Nunana.Repositories;
+using Nunana.Persistence.Repositories;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(NinjectWebCommon), "Stop")]
