@@ -1,5 +1,4 @@
 ﻿using Nunana.Models;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -26,39 +25,23 @@ namespace Nunana.Repositories
                 .SingleOrDefault(r => r.RoomId == roomId && r.TenantId == tenantId);
         }
 
-        public IEnumerable<Rental> GetRentalsWithRoomsAndTenants()
+        public IEnumerable<Rental> GetRentals(RentalQuery query)
         {
-            return _context.Rentals
+            var queryFromDb = _context.Rentals
                 .Include(r => r.Room)
                 .Include(r => r.Tenant)
-                .ToList();
-        }
+                .AsQueryable();
 
-        public IEnumerable<Rental> GetNotCancelledRentals()
-        {
-            return _context.Rentals
-                .Include(r => r.Room)
-                .Include(r => r.Tenant)
-                .Where(r => !r.IsCancelled)
-                .ToList();
-        }
+            if (query.IsCancelled.HasValue && query.IsCancelled == true)
+                queryFromDb = queryFromDb.Where(r => r.IsCancelled);
 
-        public IEnumerable<Rental> GetCancelledRentals()
-        {
-            return _context.Rentals
-                .Include(r => r.Room)
-                .Include(r => r.Tenant)
-                .Where(r => r.IsCancelled)
-                .ToList();
-        }
+            if (query.IsCancelled.HasValue && query.IsCancelled == false)
+                queryFromDb = queryFromDb.Where(r => !r.IsCancelled);
 
-        public IEnumerable<Rental> GetRentalsForTimePeriod(DateTime startDate, DateTime endDate)
-        {
-            return _context.Rentals
-                .Include(r => r.Room)
-                .Include(r => r.Tenant)
-                .Where(r => !r.IsCancelled)
-                .Where(e => e.StartDate >= startDate && e.EndDate <= endDate);
+            if (query.StartDate.HasValue && query.EndDate.HasValue)
+                queryFromDb = queryFromDb.Where(e => e.StartDate >= query.StartDate && e.EndDate <= query.EndDate);
+
+            return queryFromDb.ToList();
         }
     }
 }

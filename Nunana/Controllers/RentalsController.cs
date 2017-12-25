@@ -22,7 +22,8 @@ namespace Nunana.Controllers
 
         public ActionResult Index()
         {
-            var rentals = _unitOfWork.Rentals.GetNotCancelledRentals();
+            var query = new RentalQuery { IsCancelled = false };
+            var rentals = _unitOfWork.Rentals.GetRentals(query);
 
             var viewModel = Mapper.Map<IEnumerable<Rental>, List<RentalListViewModel>>(rentals);
 
@@ -36,7 +37,8 @@ namespace Nunana.Controllers
 
         public ActionResult Cancelled()
         {
-            var cancelledRooms = _unitOfWork.Rentals.GetCancelledRentals();
+            var query = new RentalQuery { IsCancelled = true };
+            var cancelledRooms = _unitOfWork.Rentals.GetRentals(query);
 
             var viewModel = Mapper.Map<IEnumerable<Rental>, List<RentalListViewModel>>(cancelledRooms);
 
@@ -48,7 +50,8 @@ namespace Nunana.Controllers
             var firstDayOfMonth = DateTimeExtensions.CalculateFirstDayOfThisMonth();
             var lastDayOfMonth = DateTimeExtensions.CalculateLastDayOfThisMonth(firstDayOfMonth);
 
-            var expiringRentals = _unitOfWork.Rentals.GetRentalsForTimePeriod(firstDayOfMonth, lastDayOfMonth);
+            var query = new RentalQuery { StartDate = firstDayOfMonth, EndDate = lastDayOfMonth };
+            var expiringRentals = _unitOfWork.Rentals.GetRentals(query);
 
             var viewModel = Mapper.Map<IEnumerable<Rental>, List<RentalListViewModel>>(expiringRentals);
 
