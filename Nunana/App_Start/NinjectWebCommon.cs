@@ -11,10 +11,11 @@ namespace Nunana.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
+    using Ninject.Web.WebApi;
     using System;
     using System.Reflection;
     using System.Web;
-
+    using System.Web.Http;
     /// <summary>
     /// Bootstrapper for the application.
     /// </summary>
@@ -51,6 +52,7 @@ namespace Nunana.App_Start
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
             RegisterServices(kernel);
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
             return kernel;
         }
 
