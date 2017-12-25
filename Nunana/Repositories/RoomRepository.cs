@@ -17,6 +17,7 @@ namespace Nunana.Repositories
         {
             return _context.Rooms.ToList();
         }
+
         public Room GetRoom(int id)
         {
             return _context.Rooms.SingleOrDefault(i => i.Id == id);
