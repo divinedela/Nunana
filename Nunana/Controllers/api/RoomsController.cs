@@ -9,19 +9,17 @@ namespace Nunana.Controllers.api
 {
     public class RoomsController : ApiController
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RoomsController()
+        public RoomsController(IUnitOfWork unitOfWork)
         {
-            _context = new ApplicationDbContext();
-            _unitOfWork = new UnitOfWork(_context);
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public IHttpActionResult GetRooms(int roomType)
         {
-            var query = new RoomQuery { RoomType = roomType, IsVacant = true};
+            var query = new RoomQuery { RoomType = roomType, IsVacant = true };
 
             var vacantRooms = _unitOfWork.Rooms.GetRooms(query);
 

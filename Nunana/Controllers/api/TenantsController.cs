@@ -10,12 +10,11 @@ namespace Nunana.Controllers.api
 {
     public class TenantsController : ApiController
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UnitOfWork _unitOfWork;
-        public TenantsController()
+        private readonly IUnitOfWork _unitOfWork;
+
+        public TenantsController(IUnitOfWork unitOfWork)
         {
-            _context = new ApplicationDbContext();
-            _unitOfWork = new UnitOfWork(_context);
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
