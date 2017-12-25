@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Nunana.DTOs;
 using Nunana.Models;
-using Nunana.Repositories;
+using Nunana.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -11,12 +11,11 @@ namespace Nunana.Controllers.api
     public class TenantsController : ApiController
     {
         private readonly ApplicationDbContext _context;
-
-        private readonly TenantRepository _repository;
+        private readonly UnitOfWork _unitOfWork;
         public TenantsController()
         {
             _context = new ApplicationDbContext();
-            _repository = new TenantRepository(_context);
+            _unitOfWork = new UnitOfWork(_context);
         }
 
         [HttpGet]
@@ -26,7 +25,7 @@ namespace Nunana.Controllers.api
 
             if (String.IsNullOrWhiteSpace(query)) return Ok(dto);
 
-            var tenants = _repository.GetTenantsWithNameQuery(query);
+            var tenants = _unitOfWork.Tenants.GetTenantsWithNameQuery(query);
             dto = Mapper.Map<IEnumerable<Tenant>, List<TenantSearchDto>>(tenants);
 
             return Ok(dto);

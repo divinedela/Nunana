@@ -2,7 +2,6 @@
 using Nunana.DTOs;
 using Nunana.Models;
 using Nunana.Persistence;
-using Nunana.Repositories;
 using System;
 using System.Globalization;
 using System.Web.Http;
@@ -12,17 +11,11 @@ namespace Nunana.Controllers.api
     public class RentalsController : ApiController
     {
         private readonly ApplicationDbContext _context;
-        private readonly RentalRepository _rentalRepository;
-        private readonly RoomRepository _roomRepository;
-        private readonly TenantRepository _tenantRepository;
         private readonly UnitOfWork _unitOfWork;
 
         public RentalsController()
         {
             _context = new ApplicationDbContext();
-            _rentalRepository = new RentalRepository(_context);
-            _roomRepository = new RoomRepository(_context);
-            _tenantRepository = new TenantRepository(_context);
             _unitOfWork = new UnitOfWork(_context);
         }
 
@@ -38,14 +31,14 @@ namespace Nunana.Controllers.api
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var room = _roomRepository.GetRoom(saveRentalDto.RoomId);
+            var room = _unitOfWork.Rooms.GetRoom(saveRentalDto.RoomId);
             if (room == null)
                 return NotFound();
 
             if (room.IsCurrentlyRented)
                 return BadRequest("Room is already rented out");
 
-            var tenant = _tenantRepository.GetTenant(saveRentalDto.TenantId);
+            var tenant = _unitOfWork.Tenants.GetTenant(saveRentalDto.TenantId);
             if (tenant == null)
                 return NotFound();
 
@@ -58,7 +51,7 @@ namespace Nunana.Controllers.api
 
             room.SetOccupied();
 
-            _rentalRepository.Add(newRental);
+            _unitOfWork.Rentals.Add(newRental);
             _unitOfWork.Complete();
 
             return Ok();
@@ -74,7 +67,7 @@ namespace Nunana.Controllers.api
         [HttpDelete]
         public IHttpActionResult Cancel(int roomId, int tenantId)
         {
-            var rental = _rentalRepository.GetRental(roomId, tenantId);
+            var rental = _unitOfWork.Rentals.GetRental(roomId, tenantId);
             if (rental == null) return NotFound();
 
             if (rental.IsCancelled) return BadRequest("Rental already cancelled");
@@ -82,7 +75,7 @@ namespace Nunana.Controllers.api
             var userName = User.Identity.Name;
             rental.Cancel(userName);
 
-            var room = _roomRepository.GetRoom(roomId);
+            var room = _unitOfWork.Rooms.GetRoom(roomId);
             if (room == null) return NotFound();
 
             if (!room.IsCurrentlyRented) return BadRequest("Room is not rented currently ");

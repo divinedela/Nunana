@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Nunana.Models;
 using Nunana.Persistence;
-using Nunana.Repositories;
 using Nunana.ViewModels;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -12,19 +11,17 @@ namespace Nunana.Controllers
     public class RoomsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly RoomRepository _repository;
         private readonly UnitOfWork _unitOfWork;
 
         public RoomsController()
         {
             _context = new ApplicationDbContext();
-            _repository = new RoomRepository(_context);
             _unitOfWork = new UnitOfWork(_context);
         }
 
         public ActionResult Index()
         {
-            var rooms = _repository.GetRooms();
+            var rooms = _unitOfWork.Rooms.GetRooms();
 
             var viewModel = Mapper.Map<IEnumerable<Room>, List<RoomsListViewModel>>(rooms);
 
@@ -46,7 +43,7 @@ namespace Nunana.Controllers
 
             var newRoom = new Room(roomFromMap.RoomNumber, roomFromMap.Type, User.Identity.Name);
 
-            _repository.Add(newRoom);
+            _unitOfWork.Rooms.Add(newRoom);
             _unitOfWork.Complete();
 
             return RedirectToAction("Index");
@@ -54,7 +51,7 @@ namespace Nunana.Controllers
 
         public ActionResult Edit(int id)
         {
-            var room = _repository.GetRoom(id);
+            var room = _unitOfWork.Rooms.GetRoom(id);
 
             if (room == null) return HttpNotFound();
 
@@ -69,7 +66,7 @@ namespace Nunana.Controllers
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var room = _repository.GetRoom(viewModel.Id);
+            var room = _unitOfWork.Rooms.GetRoom(viewModel.Id);
             if (room == null) return HttpNotFound();
 
             Mapper.Map(viewModel, room);
@@ -81,7 +78,7 @@ namespace Nunana.Controllers
 
         public ActionResult Vacant()
         {
-            var vacantRooms = _repository.GetVacantRooms();
+            var vacantRooms = _unitOfWork.Rooms.GetVacantRooms();
 
             var viewModel = Mapper.Map<IEnumerable<Room>, List<RoomsListViewModel>>(vacantRooms);
 

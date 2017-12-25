@@ -1,5 +1,5 @@
 ﻿using Nunana.Models;
-using Nunana.Repositories;
+using Nunana.Persistence;
 using Nunana.ViewModels;
 using System;
 using System.Data.Entity;
@@ -12,18 +12,17 @@ namespace Nunana.Controllers
     public class RentalsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly RentalRepository _repository;
+        private readonly UnitOfWork _unitOfWork;
 
         public RentalsController()
         {
             _context = new ApplicationDbContext();
-            _repository = new RentalRepository(_context);
+            _unitOfWork = new UnitOfWork(_context);
         }
 
         public ActionResult Index()
         {
-            var rentals = _repository.GetRentalsWithRoomsAndTenants()
-                .Where(r => !r.IsCancelled)
+            var rentals = _unitOfWork.Rentals.GetNotCancelledRentals()
                 .Select(a => new RentalListViewModel
                 {
                     RoomNumber = a.Room.RoomNumber,
@@ -46,8 +45,7 @@ namespace Nunana.Controllers
 
         public ActionResult Cancelled()
         {
-            var cancelledRooms = _repository.GetRentalsWithRoomsAndTenants()
-                .Where(r => r.IsCancelled)
+            var cancelledRooms = _unitOfWork.Rentals.GetCancelledRentals()
                 .Select(a => new RentalListViewModel
                 {
                     RoomNumber = a.Room.RoomNumber,
@@ -72,9 +70,7 @@ namespace Nunana.Controllers
             var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddSeconds(-1);
 
-            var rentals = _repository.GetRentals()
-                .Where(r => !r.IsCancelled)
-                .Where(e => e.StartDate >= firstDayOfMonth && e.EndDate <= lastDayOfMonth)
+            var rentals = _unitOfWork.Rentals.GetRentalsForTimePeriod(firstDayOfMonth, lastDayOfMonth)
                 .Select(a => new RentalListViewModel
                 {
                     RoomNumber = a.Room.RoomNumber,
