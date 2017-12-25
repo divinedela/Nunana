@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Nunana.DTOs;
+using Nunana.Extensions;
 using Nunana.Models;
 using Nunana.Persistence;
-using System;
-using System.Globalization;
 using System.Web.Http;
 
 namespace Nunana.Controllers.api
@@ -17,13 +16,6 @@ namespace Nunana.Controllers.api
         {
             _context = new ApplicationDbContext();
             _unitOfWork = new UnitOfWork(_context);
-        }
-
-        private static DateTime ConvertToDateTime(string dateString)
-        {
-            return DateTime.ParseExact(dateString,
-                "ddd MMM dd yyyy HH:mm:ss 'GMT'K '(GMT Standard Time)'",
-                CultureInfo.InvariantCulture);
         }
 
         [HttpPost]
@@ -42,8 +34,8 @@ namespace Nunana.Controllers.api
             if (tenant == null)
                 return NotFound();
 
-            var startDate = ConvertToDateTime(saveRentalDto.StartDate);
-            var endDate = GetRentalEndDate(saveRentalDto, startDate);
+            var startDate = DateTimeExtensions.ConvertToDateTime(saveRentalDto.StartDate);
+            var endDate = DateTimeExtensions.GetRentalEndDate(saveRentalDto, startDate);
 
             var rentalFromMap = Mapper.Map<SaveRentalDto, Rental>(saveRentalDto);
             var userName = User.Identity.Name;
@@ -57,12 +49,6 @@ namespace Nunana.Controllers.api
             return Ok();
         }
 
-        private static DateTime GetRentalEndDate(SaveRentalDto saveRentalDto, DateTime startDate)
-        {
-            var numberOfMonths = saveRentalDto.Months;
-            var endDate = startDate.AddMonths(numberOfMonths);
-            return endDate;
-        }
 
         [HttpDelete]
         public IHttpActionResult Cancel(int roomId, int tenantId)

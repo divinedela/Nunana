@@ -21,7 +21,9 @@ namespace Nunana.Controllers.api
         [HttpGet]
         public IHttpActionResult GetRooms(int roomType)
         {
-            var vacantRooms = _unitOfWork.Rooms.GetVacantRoomsOfType(roomType);
+            var query = new RoomQuery { RoomType = roomType, IsVacant = true};
+
+            var vacantRooms = _unitOfWork.Rooms.GetRooms(query);
 
             var dto = Mapper.Map<IEnumerable<Room>, List<RoomDto>>(vacantRooms);
 

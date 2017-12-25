@@ -25,7 +25,7 @@ namespace Nunana.Controllers.api
 
             if (String.IsNullOrWhiteSpace(query)) return Ok(dto);
 
-            var tenants = _unitOfWork.Tenants.GetTenantsWithNameQuery(query);
+            var tenants = _unitOfWork.Tenants.GetTenantsWithName(query);
             dto = Mapper.Map<IEnumerable<Tenant>, List<TenantSearchDto>>(tenants);
 
             return Ok(dto);

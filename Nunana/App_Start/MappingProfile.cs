@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Nunana.DTOs;
+using Nunana.Extensions;
 using Nunana.Models;
 using Nunana.ViewModels;
 
@@ -26,6 +27,14 @@ namespace Nunana.App_Start
             CreateMap<Tenant, TenantSearchDto>()
                 .ForMember(tvm => tvm.Name, opt => opt.MapFrom(t => t.FullName));
 
+            CreateMap<Rental, RentalListViewModel>()
+                .ForMember(vm => vm.RentalStartDate, opt => opt.MapFrom(t => t.StartDate.ToShortDateString()))
+                .ForMember(vm => vm.RentalEndDate, opt => opt.MapFrom(t => t.EndDate.ToShortDateString()))
+                .ForMember(vm => vm.TenantName, opt => opt.MapFrom(t => t.Tenant.FullName))
+                .ForMember(vm => vm.CreatorName, opt => opt.MapFrom(t => t.CreatedBy))
+                .ForMember(vm => vm.RoomNumber, opt => opt.MapFrom(t => t.Room.RoomNumber))
+                .ForMember(vm => vm.NumberOfMonths, opt => opt.MapFrom(t => DateTimeExtensions.GetDifferenceInMonths(t.StartDate, t.EndDate)));
+
 
 
             //Map DTOs to Domain Objects
@@ -49,5 +58,8 @@ namespace Nunana.App_Start
                 .ForMember(t => t.DateCancelled, opt => opt.Ignore())
                 .ForMember(t => t.IsCancelled, opt => opt.Ignore());
         }
+
+
+
     }
 }

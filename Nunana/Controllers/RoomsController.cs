@@ -21,7 +21,7 @@ namespace Nunana.Controllers
 
         public ActionResult Index()
         {
-            var rooms = _unitOfWork.Rooms.GetRooms();
+            var rooms = _unitOfWork.Rooms.GetRooms(null);
 
             var viewModel = Mapper.Map<IEnumerable<Room>, List<RoomsListViewModel>>(rooms);
 
@@ -78,7 +78,9 @@ namespace Nunana.Controllers
 
         public ActionResult Vacant()
         {
-            var vacantRooms = _unitOfWork.Rooms.GetVacantRooms();
+            var query = new RoomQuery { IsVacant = true };
+
+            var vacantRooms = _unitOfWork.Rooms.GetRooms(query);
 
             var viewModel = Mapper.Map<IEnumerable<Room>, List<RoomsListViewModel>>(vacantRooms);
 

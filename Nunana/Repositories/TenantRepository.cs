@@ -28,7 +28,7 @@ namespace Nunana.Repositories
             _context.Tenants.Add(tenant);
         }
 
-        public List<Tenant> GetTenantsWithNameQuery(string query)
+        public IEnumerable<Tenant> GetTenantsWithName(string query)
         {
             return _context.Tenants
                 .Where(c => c.FirstName.Contains(query) || c.LastName.Contains(query))

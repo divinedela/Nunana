@@ -13,9 +13,17 @@ namespace Nunana.Repositories
             _context = context;
         }
 
-        public IEnumerable<Room> GetRooms()
+        public IEnumerable<Room> GetRooms(RoomQuery roomQuery)
         {
-            return _context.Rooms.ToList();
+            var query = _context.Rooms.AsQueryable();
+
+            if (roomQuery != null && roomQuery.RoomType.HasValue)
+                query = query.Where(c => (int)c.Type == roomQuery.RoomType.Value);
+
+            if (roomQuery != null && roomQuery.IsVacant.HasValue && roomQuery.IsVacant.Value)
+                query = query.Where(i => !i.IsCurrentlyRented);
+
+            return query.ToList();
         }
 
         public Room GetRoom(int id)
@@ -23,20 +31,9 @@ namespace Nunana.Repositories
             return _context.Rooms.SingleOrDefault(i => i.Id == id);
         }
 
-        public IEnumerable<Room> GetVacantRooms()
-        {
-            return _context.Rooms.Where(i => !i.IsCurrentlyRented).ToList();
-        }
-
         public void Add(Room room)
         {
             _context.Rooms.Add(room);
-        }
-
-        public IEnumerable<Room> GetVacantRoomsOfType(int roomType)
-        {
-            return _context.Rooms.Where(i => !i.IsCurrentlyRented)
-                .Where(c => (int)c.Type == roomType).ToList();
         }
     }
 }

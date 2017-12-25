@@ -48,7 +48,7 @@ namespace Nunana.Repositories
             return _context.Rentals
                 .Include(r => r.Room)
                 .Include(r => r.Tenant)
-                .Where(r => !r.IsCancelled)
+                .Where(r => r.IsCancelled)
                 .ToList();
         }
 

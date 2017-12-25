@@ -1,9 +1,9 @@
-﻿using Nunana.Models;
+﻿using AutoMapper;
+using Nunana.Extensions;
+using Nunana.Models;
 using Nunana.Persistence;
 using Nunana.ViewModels;
-using System;
-using System.Data.Entity;
-using System.Linq;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Nunana.Controllers
@@ -22,20 +22,11 @@ namespace Nunana.Controllers
 
         public ActionResult Index()
         {
-            var rentals = _unitOfWork.Rentals.GetNotCancelledRentals()
-                .Select(a => new RentalListViewModel
-                {
-                    RoomNumber = a.Room.RoomNumber,
-                    TenantName = a.Tenant.FirstName + ", " + a.Tenant.LastName,
-                    RentalStartDate = a.StartDate.ToString(),
-                    RentalEndDate = a.EndDate.ToString(),
-                    RoomId = a.RoomId,
-                    TenantId = a.TenantId,
-                    CreatorName = a.CreatedBy,
-                    NumberOfMonths = DbFunctions.DiffMonths(a.StartDate, a.EndDate).ToString()
-                }).ToList();
+            var rentals = _unitOfWork.Rentals.GetNotCancelledRentals();
 
-            return View(rentals);
+            var viewModel = Mapper.Map<IEnumerable<Rental>, List<RentalListViewModel>>(rentals);
+
+            return View(viewModel);
         }
 
         public ActionResult Create()
@@ -45,45 +36,23 @@ namespace Nunana.Controllers
 
         public ActionResult Cancelled()
         {
-            var cancelledRooms = _unitOfWork.Rentals.GetCancelledRentals()
-                .Select(a => new RentalListViewModel
-                {
-                    RoomNumber = a.Room.RoomNumber,
-                    TenantName = a.Tenant.FirstName + ", " + a.Tenant.LastName,
-                    RentalStartDate = a.StartDate.ToString(),
-                    RentalEndDate = a.EndDate.ToString(),
-                    RoomId = a.RoomId,
-                    TenantId = a.TenantId,
-                    CreatorName = a.CreatedBy,
-                    CancelledBy = a.CancelledBy,
-                    DateCancelled = a.DateCancelled.ToString(),
-                    NumberOfMonths = DbFunctions.DiffMonths(a.StartDate, a.EndDate).ToString()
-                }).ToList();
+            var cancelledRooms = _unitOfWork.Rentals.GetCancelledRentals();
 
-            return View(cancelledRooms);
+            var viewModel = Mapper.Map<IEnumerable<Rental>, List<RentalListViewModel>>(cancelledRooms);
+
+            return View(viewModel);
         }
 
         public ActionResult ExpiringThisMonth()
         {
-            var date = DateTime.Today;
+            var firstDayOfMonth = DateTimeExtensions.CalculateFirstDayOfThisMonth();
+            var lastDayOfMonth = DateTimeExtensions.CalculateLastDayOfThisMonth(firstDayOfMonth);
 
-            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
-            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddSeconds(-1);
+            var expiringRentals = _unitOfWork.Rentals.GetRentalsForTimePeriod(firstDayOfMonth, lastDayOfMonth);
 
-            var rentals = _unitOfWork.Rentals.GetRentalsForTimePeriod(firstDayOfMonth, lastDayOfMonth)
-                .Select(a => new RentalListViewModel
-                {
-                    RoomNumber = a.Room.RoomNumber,
-                    TenantName = a.Tenant.FirstName + ", " + a.Tenant.LastName,
-                    RentalStartDate = a.StartDate.ToString(),
-                    RentalEndDate = a.EndDate.ToString(),
-                    RoomId = a.RoomId,
-                    TenantId = a.TenantId,
-                    CreatorName = a.CreatedBy,
-                    NumberOfMonths = DbFunctions.DiffMonths(a.StartDate, a.EndDate).ToString()
-                }).ToList();
+            var viewModel = Mapper.Map<IEnumerable<Rental>, List<RentalListViewModel>>(expiringRentals);
 
-            return View(rentals);
+            return View(viewModel);
         }
     }
 }
