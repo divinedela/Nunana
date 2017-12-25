@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Nunana.Models;
+using Nunana.Persistence;
 using Nunana.Repositories;
 using Nunana.ViewModels;
 using System.Collections.Generic;
@@ -12,11 +13,13 @@ namespace Nunana.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly RoomRepository _repository;
+        private readonly UnitOfWork _unitOfWork;
 
         public RoomsController()
         {
             _context = new ApplicationDbContext();
             _repository = new RoomRepository(_context);
+            _unitOfWork = new UnitOfWork(_context);
         }
 
         public ActionResult Index()
@@ -44,7 +47,7 @@ namespace Nunana.Controllers
             var newRoom = new Room(roomFromMap.RoomNumber, roomFromMap.Type, User.Identity.Name);
 
             _repository.Add(newRoom);
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return RedirectToAction("Index");
         }
@@ -71,7 +74,7 @@ namespace Nunana.Controllers
 
             Mapper.Map(viewModel, room);
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return RedirectToAction("Index");
         }
