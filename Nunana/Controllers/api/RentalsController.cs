@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Nunana.DTOs;
 using Nunana.Models;
+using Nunana.Persistence;
 using Nunana.Repositories;
 using System;
 using System.Globalization;
@@ -14,6 +15,7 @@ namespace Nunana.Controllers.api
         private readonly RentalRepository _rentalRepository;
         private readonly RoomRepository _roomRepository;
         private readonly TenantRepository _tenantRepository;
+        private readonly UnitOfWork _unitOfWork;
 
         public RentalsController()
         {
@@ -21,6 +23,7 @@ namespace Nunana.Controllers.api
             _rentalRepository = new RentalRepository(_context);
             _roomRepository = new RoomRepository(_context);
             _tenantRepository = new TenantRepository(_context);
+            _unitOfWork = new UnitOfWork(_context);
         }
 
         private static DateTime ConvertToDateTime(string dateString)
@@ -56,7 +59,7 @@ namespace Nunana.Controllers.api
             room.SetOccupied();
 
             _rentalRepository.Add(newRental);
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok();
         }
@@ -86,7 +89,7 @@ namespace Nunana.Controllers.api
 
             room.SetVacant();
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok();
         }

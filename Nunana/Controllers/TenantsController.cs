@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Nunana.Models;
+using Nunana.Persistence;
 using Nunana.Repositories;
 using Nunana.ViewModels;
 using System.Collections.Generic;
@@ -12,10 +13,13 @@ namespace Nunana.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly TenantRepository _repository;
+        private readonly UnitOfWork _unitOfWork;
+
         public TenantsController()
         {
             _context = new ApplicationDbContext();
             _repository = new TenantRepository(_context);
+            _unitOfWork = new UnitOfWork(_context);
         }
 
         public ActionResult Index()
@@ -42,7 +46,7 @@ namespace Nunana.Controllers
             var tenant = Mapper.Map<TenantFormViewModel, Tenant>(viewModel);
 
             _repository.Add(tenant);
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return RedirectToAction("Index");
         }
@@ -68,7 +72,7 @@ namespace Nunana.Controllers
 
             Mapper.Map(viewModel, tenant);
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return RedirectToAction("Index");
         }
