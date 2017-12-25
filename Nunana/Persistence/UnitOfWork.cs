@@ -3,13 +3,13 @@ using Nunana.Repositories;
 
 namespace Nunana.Persistence
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
 
-        public RoomRepository Rooms { get; private set; }
-        public TenantRepository Tenants { get; private set; }
-        public RentalRepository Rentals { get; private set; }
+        public IRoomRepository Rooms { get; private set; }
+        public ITenantRepository Tenants { get; private set; }
+        public IRentalRepository Rentals { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {

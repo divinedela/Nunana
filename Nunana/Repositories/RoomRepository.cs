@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Nunana.Repositories
 {
-    public class RoomRepository
+    public class RoomRepository : IRoomRepository
     {
         private readonly ApplicationDbContext _context;
 

@@ -246,8 +246,12 @@
     <Compile Include="Models\Rental.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\Tenant.cs" />
+    <Compile Include="Persistence\IUnitOfWork.cs" />
     <Compile Include="Persistence\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IRentalRepository.cs" />
+    <Compile Include="Repositories\IRoomRepository.cs" />
+    <Compile Include="Repositories\ITenantRepository.cs" />
     <Compile Include="Repositories\RentalRepository.cs" />
     <Compile Include="Repositories\RoomRepository.cs" />
     <Compile Include="Repositories\TenantRepository.cs" />
