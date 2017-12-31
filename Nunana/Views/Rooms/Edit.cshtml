@@ -48,12 +48,13 @@
                 e.preventDefault();
                 var link = $(e.target);
                 swal({
-                    title: "Are you sure?",
+                    title: "Leave this page?",
                     text: "Edits will not be saved",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonText: "Yes!",
                     confirmButtonClass: 'btn btn-warning',
+                    cancelButtonText: "No",
                     cancelButtonClass: 'btn btn-primary'
                 }).then((result) => {
                     if (result.value) {

@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using Nunana.Extensions;
-using Nunana.Persistence;
-using System.Web.Http;
 using Nunana.Core;
 using Nunana.Core.DTOs;
 using Nunana.Core.Models;
+using Nunana.Extensions;
+using System.Web.Http;
 
 namespace Nunana.Controllers.api
 {
