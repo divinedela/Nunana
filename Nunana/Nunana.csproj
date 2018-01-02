@@ -227,6 +227,7 @@
     <Compile Include="Controllers\api\RentalsController.cs" />
     <Compile Include="Controllers\api\RoomsController.cs" />
     <Compile Include="Controllers\api\TenantsController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RentalsController.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Core\DTOs\RoomDto.cs" />
     <Compile Include="Core\DTOs\SaveRentalDto.cs" />
     <Compile Include="Core\DTOs\TenantSearchDto.cs" />
+    <Compile Include="Core\ViewModels\RoomsChartViewModel.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -485,6 +487,8 @@
     <Content Include="Content\bootstrap-datepicker.min.css.map" />
     <Content Include="Content\bootstrap-datepicker.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
@@ -689,6 +693,7 @@
     <Content Include="Views\Rooms\Vacant.cshtml" />
     <Content Include="Views\Rentals\Cancelled.cshtml" />
     <Content Include="Views\Rentals\ExpiringThisMonth.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

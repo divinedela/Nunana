@@ -27,7 +27,9 @@ namespace Nunana
                 "~/Scripts/datatables/datatables.bootstrap.js",
                 "~/Scripts/bootstrap-datepicker.js",
                 "~/Scripts/typeahead.bundle.js",
-                "~/Scripts/sweetalert2.all.js"));
+                "~/Scripts/sweetalert2.all.js",
+                "~/Scripts/chart.js"
+               ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",

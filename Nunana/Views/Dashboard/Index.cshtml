@@ -1,0 +1,41 @@
+﻿@model Nunana.Core.ViewModels.RoomsChartViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+<br/>
+<h4 style="text-align: center">
+    Number of Rented and Vacant Rooms
+</h4>
+<br/>
+<canvas id="myChart" width="770" height="385" style="display: block; width: 770px; height: 385px;"></canvas>
+
+@section scripts{
+    @Scripts.Render("~/bundles/libs")
+    <script>
+        $(document).ready(function () {
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ["Rented Rooms", "Vacant Rooms"],
+                    datasets: [{
+                        data: [@Model.RentedRoomsCount, @Model.VacantRoomsCount],
+                        backgroundColor: [
+                            'rgba(25, 149, 220, 0.8)',
+                            'rgba(255, 206, 86, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(25, 149, 220, 0.2)',
+                            'rgba(255, 206, 86, 0.8)'
+                        ],
+                        borderWidth: 0.5
+                    }]
+                },
+                options: {
+
+                }
+            });
+        });
+    </script>
+}
